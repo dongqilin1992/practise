@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="MySQL - test@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="test">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="es"/>
+    <schema id="3" name="information_schema"/>
+    <schema id="4" name="mysql"/>
+    <schema id="5" name="performance_schema"/>
+    <schema id="6" name="sampledb"/>
+    <schema id="7" name="shiro"/>
+    <table id="8" parent="1" name="sys_permissions"/>
+    <table id="9" parent="1" name="sys_roles"/>
+    <table id="10" parent="1" name="sys_roles_permissions"/>
+    <table id="11" parent="1" name="sys_users"/>
+    <table id="12" parent="1" name="sys_users_roles"/>
+    <table id="13" parent="1" name="user"/>
+    <column id="14" parent="8" name="id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="15" parent="8" name="permission">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="16" parent="8" name="description">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="17" parent="8" name="available">
+      <data-type>tinyint(1)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <index id="18" parent="8" name="idx_sys_permissions_permission">
+      <columns>permission</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="19" parent="8" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="20" parent="8" name="idx_sys_permissions_permission">
+      <columns>permission</columns>
+      <underlying-index>idx_sys_permissions_permission</underlying-index>
+    </key>
+    <column id="21" parent="9" name="id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="22" parent="9" name="role">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="23" parent="9" name="description">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="24" parent="9" name="available">
+      <data-type>tinyint(1)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <index id="25" parent="9" name="idx_sys_roles_role">
+      <columns>role</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="26" parent="9" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="27" parent="9" name="idx_sys_roles_role">
+      <columns>role</columns>
+      <underlying-index>idx_sys_roles_role</underlying-index>
+    </key>
+    <column id="28" parent="10" name="role_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <column id="29" parent="10" name="permission_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <key id="30" parent="10" name="PRIMARY">
+      <columns>role_id
+permission_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="31" parent="11" name="id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="32" parent="11" name="username">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="33" parent="11" name="password">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="34" parent="11" name="salt">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="35" parent="11" name="locked">
+      <data-type>tinyint(1)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <index id="36" parent="11" name="idx_sys_users_username">
+      <columns>username</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="37" parent="11" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="38" parent="11" name="idx_sys_users_username">
+      <columns>username</columns>
+      <underlying-index>idx_sys_users_username</underlying-index>
+    </key>
+    <column id="39" parent="12" name="user_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <column id="40" parent="12" name="role_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(20)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <key id="41" parent="12" name="PRIMARY">
+      <columns>user_id
+role_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="42" parent="13" name="user_id">
+      <mandatory>1</mandatory>
+      <data-type>int(4)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="43" parent="13" name="user_name">
+      <mandatory>1</mandatory>
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="44" parent="13" name="password">
+      <mandatory>1</mandatory>
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="45" parent="13" name="phone">
+      <mandatory>1</mandatory>
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="46" parent="13" name="order_number">
+      <data-type>varchar(50)|0</data-type>
+    </column>
+    <key id="47" parent="13" name="PRIMARY">
+      <columns>user_id</columns>
+      <primary>1</primary>
+    </key>
+  </database-model>
+</dataSource>

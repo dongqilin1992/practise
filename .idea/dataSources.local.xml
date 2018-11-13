@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - sampledb@localhost" uuid="97a2ba5d-db97-4360-b3ac-e1619f767417">
+      <database-info product="MySQL" version="5.5.28-log" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.15 ( Revision: ${bzr.revision-id} )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <resolve-scope>sampledb:</resolve-scope>
+    </data-source>
+    <data-source name="MySQL - test@localhost" uuid="c851f989-32db-4863-b5a7-4a6ad6a23069">
+      <database-info product="MySQL" version="5.5.28-log" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.15 ( Revision: ${bzr.revision-id} )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <resolve-scope>test:</resolve-scope>
+    </data-source>
+  </component>
+</project>
