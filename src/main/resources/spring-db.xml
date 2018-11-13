@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter" lazy-init="true">
+        <property name="logSlowSql" value="true"/>
+        <property name="mergeSql" value="true"/>
+    </bean>
+
+    <!-- 数据库连接 -->
+    <bean id="readDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close" init-method="init" lazy-init="true">
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="url" value="${read.url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <!-- 省略部分内容 -->
+    </bean>
+
+    <bean id="writeDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close" init-method="init" lazy-init="true">
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="url" value="${write.url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <!-- 省略部分内容 -->
+    </bean>
+
+    <!-- 配置动态分配的读写 数据源 -->
+    <bean id="dataSource" class="com.smart.aop.ChooseDataSource" lazy-init="true">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String" value-type="javax.sql.DataSource">
+                <!-- write -->
+                <entry key="write" value-ref="writeDataSource"/>
+                <!-- read -->
+                <entry key="read" value-ref="readDataSource"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="writeDataSource"/>
+        <property name="methodType">
+            <map key-type="java.lang.String">
+                <!-- read -->
+                <entry key="read" value=",get,select,count,list,query,find,"/>
+                <!-- write -->
+                <entry key="write" value=",insert,add,create,update,delete,remove,"/>
+            </map>
+        </property>
+    </bean>
+
+</beans>

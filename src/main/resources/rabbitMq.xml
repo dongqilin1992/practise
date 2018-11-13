@@ -1,0 +1,82 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/rabbit
+    http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd" >
+
+    <!-- 配置connetionFactoru 指定rabbit-server参数 -->
+    <rabbit:connection-factory id="connectionFactory" username="${rabbitmq.username}" password="${rabbitmq.password}" host="${rabbitmq.host}" port="${rabbitmq.port}"/>
+    <!-- 通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成  -->
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <!-- 配置rabbitmq传输协议 -->
+    <!-- direct 一对一传输 -->
+    <!-- 定义directTemplate用于数据的接收和发送 -->
+    <rabbit:template id="directTemplate" connection-factory="connectionFactory" exchange="directExchange"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="directQueue-add" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="directQueue-query" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 定义direct交换机 -->
+    <rabbit:direct-exchange name="directExchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="directQueue-add" key="direct.add"/>
+            <rabbit:binding queue="directQueue-query" key="direct.query"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+
+    <!-- 消息接收者 -->
+    <!--<bean id="directConsumer" class="com.smart.mq.DirectConsumer"/>-->
+    <!--队列监听-->
+    <rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
+        <rabbit:listener queues="directQueue-add" ref="directConsumerAdd"/>
+        <rabbit:listener queues="directQueue-query" ref="directConsumerQuery"/>
+    </rabbit:listener-container>
+
+
+
+    <!-- fanout 一对多传输 -->
+    <!-- 定义fanoutTemplate用于数据的接收和发送 -->
+    <rabbit:template id="fountTemplate" connection-factory="connectionFactory" exchange="fountExchange"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="fountQueue-sys" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueue-sso" durable="true" auto-delete="false" exclusive="false"/>
+
+    <!-- 定义交换机 -->
+    <rabbit:fanout-exchange name="fountExchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="fountQueue-sys"/>
+            <rabbit:binding queue="fountQueue-sso"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+    <!--队列监听-->
+    <rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
+        <rabbit:listener queues="fountQueue-sys" ref="fountConsumerSys"/>
+        <rabbit:listener queues="fountQueue-sso" ref="fountConsumerSso"/>
+    </rabbit:listener-container>
+
+
+    <!-- topic 主题传输 -->
+    <!-- 定义topicTemplate用于数据的接收和发送 -->
+    <rabbit:template id="topicTemplate" connection-factory="connectionFactory" exchange="topicExchange"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="topicQueue-add" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueue-all" durable="true" auto-delete="false" exclusive="false"/>
+
+    <!-- 定义交换机 -->
+    <rabbit:topic-exchange name="topicExchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <!-- 后台管理系统 -->
+            <rabbit:binding queue="topicQueue-add" pattern="topic.add"/>
+            <rabbit:binding queue="topicQueue-all" pattern="topic.#"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+    <!-- 消息接收者 -->
+    <!--队列监听-->
+    <rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
+        <rabbit:listener queues="topicQueue-add" ref="topicConsumerAdd"/>
+        <rabbit:listener queues="topicQueue-all" ref="topicConsumerAll"/>
+    </rabbit:listener-container>
+</beans>
