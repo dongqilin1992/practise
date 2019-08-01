@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -128,8 +129,8 @@ public class StreamTest {
         Student stuA = new Student(1, "A", "M", 184);
         Student stuB = new Student(2, "B", "G", 163);
         Student stuC = new Student(3, "C", "M", 175);
-        Student stuD = new Student(4, "D", "G", 158);
-        Student stuE = new Student(5, "E", "M", 170);
+        Student stuD = new Student(4, "B", "G", 158);
+        Student stuE = new Student(5, "C", "M", 170);
         List<Student> list = new ArrayList<>();
         list.add(stuA);
         list.add(stuB);
@@ -145,12 +146,25 @@ public class StreamTest {
             List<Student> entryUserList = entryUser.getValue();
             System.out.println(key + ":"+entryUserList);
         }
+        //统计每个分组的count
+        Map<String, Long> groupcount = list.stream().collect(Collectors.groupingBy(Student::getSex, Collectors.counting()));
+        System.out.println("每个分组的count"+groupcount);
 
         Map<Integer, Student> userMap = list.stream().collect(Collectors.toMap(Student::getNo, a -> a,(k1,k2)->k1));
         System.out.println("List转map:" + userMap);
         //获取list对象的某个字段组装成新list
         List<Integer> userNoList = list.stream().map(Student::getNo).collect(Collectors.toList());
         System.out.println("userNoList:" +userNoList);
+
+        //分支求和
+        List<String> items = Arrays.asList("apple", "apple", "banana", "apple", "orange", "banana", "papaya");
+        Map<String, Long> result = items.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(result);
+
+        // 多字段分组统计
+        Map<String, Long> countMap = list.stream().collect(Collectors.groupingBy(o -> o.getSex() + "_" + o.getName(), Collectors.counting()));
+        System.out.println(countMap);
+
     }
 
     class Student {
